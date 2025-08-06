@@ -1,0 +1,15 @@
+alembic  
+sqlalchemy
+psycopg2-binary
+asyncpg
+
+fastapi
+pydantic
+pydantic-settings
+python-dotenv
+uvicorn
+black
+
+torch 
+transformers 
+scipy

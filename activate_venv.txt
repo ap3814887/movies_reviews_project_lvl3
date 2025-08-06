@@ -1,0 +1,8 @@
+venv\Scripts\activate
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass #Разрешение активации
+
+uvicorn app.main:app --reload
+
+
+http://127.0.0.1:8000
