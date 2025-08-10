@@ -35,25 +35,14 @@ def get_or_create_movie(db: Session, title: str) -> models.Movie:
     return movie
 
 
-def create_review(db: Session, movie_id: int, rating: int, review_text: str, sentiment: str) -> models.Review:
-    """
-    Создаёт отзыв для заданного фильма.
-
-    Args:
-        db (Session): текущая сессия БД.
-        movie_id (int): ID фильма, к которому относится отзыв.
-        rating (int): оценка отзыва (1-10).
-        review_text (str): текст отзыва.
-
-    Returns:
-        Review: экземпляр созданного отзыва.
-    """
-    sentiment = classify_sentiment(review_text)  # классификация тональности
-    review = models.Review(movie_id=movie_id, rating=rating, review_text=review_text, sentiment=sentiment)
+def create_review(db: Session, movie_id: int, rating: int, review_text: str, sentiment: str, user_id: int) -> models.Review:
+    sentiment = classify_sentiment(review_text)
+    review = models.Review(movie_id=movie_id, rating=rating, review_text=review_text, sentiment=sentiment, user_id=user_id)
     db.add(review)
     db.commit()
     db.refresh(review)
     return review
+
 
 
 def get_reviews(db: Session, movie_filter: Optional[str] = None, sentiment_filter: Optional[str] = None) -> list[models.Review]:

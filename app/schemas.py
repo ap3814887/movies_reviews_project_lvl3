@@ -5,7 +5,7 @@ Pydantic-схемы для валидации запросов и ответов
 """
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr  
 
 from .sentiment_types import SentimentEnum
 
@@ -24,5 +24,25 @@ class ReviewRead(BaseModel):
     sentiment: SentimentEnum
     created_at: datetime             # Время создания
 
+# Схема регистрации пользователя
+class UserCreate(BaseModel):
+    name: str
+    email: EmailStr 
+    password: str
+
+# Схема для возврата данных пользователя
+class UserRead(BaseModel):
+    id: int
+    name: str
+    email: str
+
+# Для возврата JWT-токена
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
     class Config:
         from_attributes = True       # Позволяет строить объект из ORM-моделей SQLAlchemy
+
+

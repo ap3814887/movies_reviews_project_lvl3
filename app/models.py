@@ -1,7 +1,7 @@
 """
 models.py
 
-SQLAlchemy ORM-модели: Movie и Review.
+SQLAlchemy ORM-модели
 """
 
 from sqlalchemy import Integer, String, Text, ForeignKey, DateTime, func, Enum
@@ -17,7 +17,7 @@ class Movie(Base):
 
     # Уникальный идентификатор фильма (первичный ключ)
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    
+
     # Название фильма, должно быть уникальным и не null
     title: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     
@@ -36,6 +36,8 @@ class Review(Base):
     # Внешний ключ — ID фильма, на который оставлен отзыв
     movie_id: Mapped[int] = mapped_column(ForeignKey("movies.id"))
 
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+
     # Оценка фильма (от 1 до 10), не может быть пустой
     rating: Mapped[int] = mapped_column(Integer, nullable=False)
 
@@ -49,3 +51,14 @@ class Review(Base):
 
     # Обратное отношение к фильму — ссылка на объект Movie
     movie: Mapped[Movie] = relationship("Movie", back_populates="reviews")
+    user: Mapped["User"] = relationship("User", back_populates="reviews")
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    email: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(String, nullable=False)
+
+    reviews: Mapped[list["Review"]] = relationship("Review", back_populates="user")
